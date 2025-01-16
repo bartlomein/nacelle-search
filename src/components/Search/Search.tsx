@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, KeyboardEvent } from "react";
 import { useDebounce } from "../../hooks/useDebounce";
 import { motion, AnimatePresence } from "framer-motion";
 
 type SearchProps = {
-  onSearch: (query: string) => void;
+  onSelect: (query: SearchResult) => void;
   placeholder?: string;
 };
 
@@ -26,13 +26,37 @@ const onSearch = (query: string): SearchResult[] => {
     item.title.toLowerCase().includes(query.toLowerCase())
   );
 };
+const dropdownVariants = {
+  hidden: {
+    opacity: 0,
+    y: -10,
+    transition: {
+      duration: 0.2,
+    },
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.2,
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -10,
+    transition: {
+      duration: 0.2,
+    },
+  },
+};
 
-const Search = ({ placeholder, onSelect }) => {
+const Search = ({ placeholder, onSelect }: SearchProps) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
 
   const debouncedQuery = useDebounce(query, 300);
 
@@ -47,6 +71,7 @@ const Search = ({ placeholder, onSelect }) => {
         const searchResults = onSearch(debouncedQuery);
         setResults(searchResults);
         setIsOpen(true);
+        setFocusedIndex(-1);
       }
     } catch (err: any) {
       setError(err.message || "An error occurred.");
@@ -64,36 +89,43 @@ const Search = ({ placeholder, onSelect }) => {
     onSelect(item);
     setQuery("");
     setIsOpen(false);
+    setFocusedIndex(-1);
   };
 
   const clearInput = () => {
     setQuery("");
     setIsOpen(false);
+    setFocusedIndex(-1);
     onSelect(null);
   };
 
-  const dropdownVariants = {
-    hidden: {
-      opacity: 0,
-      y: -10,
-      transition: {
-        duration: 0.2,
-      },
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.2,
-      },
-    },
-    exit: {
-      opacity: 0,
-      y: -10,
-      transition: {
-        duration: 0.2,
-      },
-    },
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (!isOpen || results.length === 0) return;
+
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setFocusedIndex((prev) => {
+        const newIndex = prev > 0 ? prev - 1 : results.length - 1;
+        return newIndex;
+      });
+    }
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setFocusedIndex((prev) => {
+        const newIndex = prev < results.length - 1 ? prev + 1 : 0;
+        return newIndex;
+      });
+    }
+
+    if (e.key === "Enter" && focusedIndex >= 0) {
+      handleSelect(results[focusedIndex]);
+    }
+
+    if (e.key === "Escape") {
+      setIsOpen(false);
+      setFocusedIndex(-1);
+    }
   };
 
   return (
@@ -104,6 +136,7 @@ const Search = ({ placeholder, onSelect }) => {
           placeholder={placeholder}
           value={query}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
           className="flex-grow outline-none"
         />
         {query && (
@@ -145,10 +178,14 @@ const Search = ({ placeholder, onSelect }) => {
           >
             {results.length > 0 ? (
               <ul className="w-full bg-white border border-gray-200 rounded-md mt-1 shadow-lg z-10">
-                {results.map((result) => (
+                {results.map((result, index) => (
                   <motion.li
                     key={result.id}
-                    className="p-2 hover:bg-gray-100 cursor-pointer text-left"
+                    className={`p-2 cursor-pointer text-left transition-colors duration-150 ${
+                      index === focusedIndex
+                        ? "bg-blue-50 text-blue-700"
+                        : "hover:bg-gray-100"
+                    }`}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.1 }}

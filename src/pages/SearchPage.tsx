@@ -9,7 +9,7 @@ const SearchPage = () => {
     <div className="min-h-screen flex flex-col">
       <div className="sticky top-0">
         <div className="max-w-4xl mx-auto w-full px-4 py-3">
-          <Search placeholder="test" onSelect={setSelectedItem} />
+          <Search placeholder="Type here..." onSelect={setSelectedItem} />
         </div>
       </div>
 
