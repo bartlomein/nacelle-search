@@ -33,8 +33,8 @@ A modern React application showcasing a search component with keyboard navigatio
 1. Clone the repository:
 
 ```bash
-git clone [repository-url]
-cd [project-name]
+git clone [https://github.com/bartlomein/nacelle-search]
+cd nacelle-search
 ```
 
 2. Install dependencies:
