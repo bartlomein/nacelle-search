@@ -1,20 +1,15 @@
-import { useState } from "react";
 import "./App.css";
-import Search, { SearchResult } from "./components/Search/Search";
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
-  const [selectedItem, setSelectedItem] = useState<SearchResult | null>(null);
-
   return (
-    <>
-      {selectedItem ? (
-        <div>
-          <div>Selected Item:</div>
-          <div>{selectedItem.title}</div>
-        </div>
-      ) : null}
-      <Search placeholder={"test"} onSelect={setSelectedItem} />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/search" element={<SearchPage />} />
+      </Routes>
+    </Router>
   );
 }
 
