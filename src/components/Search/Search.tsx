@@ -58,7 +58,6 @@ const Search = ({ placeholder, onSelect }) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
-    onSelect(null);
   };
 
   const handleSelect = (item: SearchResult) => {
