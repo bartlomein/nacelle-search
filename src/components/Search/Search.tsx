@@ -3,7 +3,7 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { motion, AnimatePresence } from "framer-motion";
 
 type SearchProps = {
-  onSelect: (query: SearchResult) => void;
+  onSelect: (query: SearchResult | null) => void;
   placeholder?: string;
 };
 
@@ -63,22 +63,27 @@ const Search = ({ placeholder, onSelect }: SearchProps) => {
   useEffect(() => {
     setIsLoading(true);
     setError(null);
-    try {
-      if (debouncedQuery.trim() === "") {
+
+    const timeoutId = setTimeout(() => {
+      try {
+        if (debouncedQuery.trim() === "") {
+          setResults([]);
+          setIsOpen(false);
+        } else {
+          const searchResults = onSearch(debouncedQuery);
+          setResults(searchResults);
+          setIsOpen(true);
+          setFocusedIndex(-1);
+        }
+      } catch (err: any) {
+        setError(err.message || "An error occurred.");
         setResults([]);
-        setIsOpen(false);
-      } else {
-        const searchResults = onSearch(debouncedQuery);
-        setResults(searchResults);
-        setIsOpen(true);
-        setFocusedIndex(-1);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err: any) {
-      setError(err.message || "An error occurred.");
-      setResults([]);
-    } finally {
-      setIsLoading(false);
-    }
+    }, 200);
+
+    return () => clearTimeout(timeoutId);
   }, [debouncedQuery]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
