@@ -6,10 +6,11 @@ import notificationReducer, {
   removeNotification,
 } from "../../store/notificationSlice";
 import { NotificationItem } from "./NotificationItem";
+import { CommonProps } from "components/Search/Search.test";
 
 jest.mock("framer-motion", () => ({
   motion: {
-    div: ({ children, ...props }: any) => (
+    div: ({ children, ...props }: CommonProps) => (
       <div data-testid="motion-div" {...props}>
         {children}
       </div>

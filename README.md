@@ -93,6 +93,7 @@ src/
 ├── pages/
 │   ├── NotificationPage.tsx
 │   └── SearchPage.tsx
+│   └── WelcomePage.tsx
 ├── store/
 │   ├── hooks.ts
 │   ├── index.ts
@@ -102,6 +103,7 @@ src/
 
 ## Available Routes
 
+- `/` - Welcome page to guide user to the available routes
 - `/search` - Search component demonstration
 - `/notification` - Notification system demonstration
 

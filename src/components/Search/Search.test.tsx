@@ -3,18 +3,22 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Search from "./Search";
 
+export type CommonProps = {
+  children?: React.ReactNode;
+};
+
 jest.mock("framer-motion", () => ({
   motion: {
-    div: function MockDiv(props: any) {
+    div: function MockDiv(props: CommonProps) {
       const { children, ...rest } = props;
       return React.createElement("div", rest, children);
     },
-    li: function MockLi(props: any) {
+    li: function MockLi(props: CommonProps) {
       const { children, ...rest } = props;
       return React.createElement("li", rest, children);
     },
   },
-  AnimatePresence: function MockAnimatePresence(props: any) {
+  AnimatePresence: function MockAnimatePresence(props: CommonProps) {
     return React.createElement(React.Fragment, null, props.children);
   },
 }));

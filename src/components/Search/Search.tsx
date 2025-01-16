@@ -75,8 +75,10 @@ const Search = ({ placeholder, onSelect }: SearchProps) => {
           setIsOpen(true);
           setFocusedIndex(-1);
         }
-      } catch (err: any) {
-        setError(err.message || "An error occurred.");
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "An error occurred";
+        setError(message);
         setResults([]);
       } finally {
         setIsLoading(false);
