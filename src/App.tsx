@@ -1,10 +1,19 @@
+import { useState } from "react";
 import "./App.css";
+import Search, { SearchResult } from "./components/Search/Search";
 
 function App() {
+  const [selectedItem, setSelectedItem] = useState<SearchResult | null>(null);
+
   return (
     <>
-      TEST
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      {selectedItem ? (
+        <div>
+          <div>Selected Item:</div>
+          <div>{selectedItem.title}</div>
+        </div>
+      ) : null}
+      <Search placeholder={"test"} onSelect={setSelectedItem} />
     </>
   );
 }
