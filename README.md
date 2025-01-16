@@ -1,50 +1,149 @@
-# React + TypeScript + Vite
+# React Search and Notification System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React application showcasing a search component with keyboard navigation and a notification system built with Redux Toolkit. The project uses Vite, TypeScript, Tailwind CSS, and Framer Motion for animations.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Search Component (/search)
 
-## Expanding the ESLint configuration
+- Debounced search functionality
+- Keyboard navigation (arrow keys, enter, escape)
+- Animated dropdown results
+- Clear input button
+- Loading states
+- Error handling
+- Mobile responsive design
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Notification System (/notification)
 
-- Configure the top-level `parserOptions` property like this:
+- Multiple notification types (success, error, info)
+- Auto-dismiss after 3 seconds
+- Animated transitions
+- Redux state management
+- Customizable styling
+- Stack notifications
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Prerequisites
+
+- Node.js (version 16 or higher)
+- npm or yarn
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone [repository-url]
+cd [project-name]
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. Install dependencies:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm install
 ```
+
+## Running the Project
+
+### Development Mode
+
+```bash
+npm run dev
+```
+
+This will start the development server at `http://localhost:5173`
+
+### Production Build
+
+```bash
+npm run build
+npm run preview
+```
+
+## Testing
+
+The project uses Jest and React Testing Library for testing.
+
+### Running Tests
+
+```bash
+npm test
+```
+
+### Running Tests in Watch Mode
+
+```bash
+npm test -- --watch
+```
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── Notification/
+│   │   ├── NotificationContainer.tsx
+│   │   ├── NotificationItem.tsx
+│   │   └── NotificationItem.test.tsx
+│   └── Search/
+│       ├── Search.tsx
+│       └── Search.test.tsx
+├── hooks/
+│   └── useDebounce.tsx
+├── pages/
+│   ├── NotificationPage.tsx
+│   └── SearchPage.tsx
+├── store/
+│   ├── hooks.ts
+│   ├── index.ts
+│   └── notificationSlice.ts
+└── App.tsx
+```
+
+## Available Routes
+
+- `/search` - Search component demonstration
+- `/notification` - Notification system demonstration
+
+## Technologies Used
+
+- React 18
+- TypeScript
+- Redux Toolkit
+- Framer Motion
+- Tailwind CSS
+- Vite
+- Jest
+- React Testing Library
+
+## Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Create production build
+- `npm run preview` - Preview production build
+- `npm run test` - Run tests
+- `npm run lint` - Run ESLint
+
+## Testing Coverage
+
+The project includes comprehensive tests for:
+
+- Search component functionality
+- Notification system
+- Redux store operations
+- User interactions
+- Animation presence
+- Component rendering
+- Error states
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests
+5. Create a pull request
+
+## License
+
+MIT
